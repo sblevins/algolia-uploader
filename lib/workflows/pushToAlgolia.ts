@@ -1,5 +1,5 @@
 import algoliasearch, { SearchClient } from 'algoliasearch';
-import { AlgoliaIndexArticle } from '../../types/apiTypes';
+import { AlgoliaIndexArticle, Article } from '../../types/apiTypes';
 
 // Clean this up later
 export const algoliaClient = algoliasearch(
@@ -10,7 +10,7 @@ export const algoliaClient = algoliasearch(
 export async function pushToAlgolia(
   client: SearchClient,
   indexName: string,
-  records: AlgoliaIndexArticle[]
+  records: Article[]
 ) {
   const index = client.initIndex(indexName);
   await index.saveObjects(records);

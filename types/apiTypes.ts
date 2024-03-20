@@ -39,6 +39,21 @@ export const AlgoliaIndexArticleToArticle = (a:AlgoliaIndexArticle):Article => {
     };
 }
 
+
+/*
+{
+  "id": 1,
+  "articleAuthor": "John Smith",
+  "articleTitle": "Amid Strikes, One Question: Are Employers Miscalculating?",
+  "articleDate": "Oct. 8, 2023, 5:01 a.m. ET",
+  "articleText": "<p>The list of gains that the Hollywood writers secured to end a nearly five-month strike with studios once seemed ludicrously ambitious: not just wage increases, but also minimum staffing levels for shows, new royalties on successful series and restrictions on outsourcing writing duties to artificial intelligence.</p><p>Yet far from an anomaly, the writers’ deal was the latest high-profile  labor standoff that seemed to produce substantial gains for workers, and  to suggest that they have more leverage than in the past.</p> <p>  United Parcel Service employees won large pay increases for part-timers  by pushing the company to the brink of a strike, while the lowest-paid  academic student employees at the University of California won salary  increases of more than 50 percent after a monthlong strike affected  thousands of students.  </p>",
+  "articleImageURL": "https://static01.nyt.com/images/2023/10/05/multimedia/00labor-analysis-01-gfzh/00labor-analysis-01-gfzh-mobileMasterAt3x.jpg?quality=75&auto=webp&disable=upscale&width=1200",
+  "articleCaption": "The Writers Guild of America’s deal was the latest high-profile labor standoff that seemed to produce substantial gains for workers.",
+  "searchable": true,
+  "objectID": "131ef11073d6b4_dashboard_generated_id"
+}
+*/
+
 export const ArticleToAlgoliaIndexArticle = (a:Article):AlgoliaIndexArticle => {
     if (a.articleImageURL === null) {
         throw new Error("ArticleToAlgoliaIndexArticle: articleImageURL is null");
