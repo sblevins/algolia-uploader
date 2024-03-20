@@ -1,4 +1,5 @@
-import { AlgoliaIndexArticle, Article, ArticleToAlgoliaIndexArticle } from "../../types/apiTypes";
+
+import { Article } from "../../types/apiTypes";
 import { fetchArticle, fetchLatestArticleId } from "../dataSource/api";
 
 export async function FetchLatestArticle(): Promise<Article> {

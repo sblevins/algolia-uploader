@@ -1,5 +1,5 @@
 import algoliasearch, { SearchClient } from 'algoliasearch';
-import { AlgoliaIndexArticle, Article } from '../../types/apiTypes';
+import { Article } from '../../types/apiTypes';
 
 // Clean this up later
 export const algoliaClient = algoliasearch(
