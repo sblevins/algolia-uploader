@@ -25,7 +25,7 @@ export type AlgoliaIndexArticle =   {
 
 // Convert the data to the format that lives in Algolia
 // May need to add some additional data down the road.
-const AlgoliaIndexArticleToArticle = (a:AlgoliaIndexArticle):Article => {
+export const AlgoliaIndexArticleToArticle = (a:AlgoliaIndexArticle):Article => {
     return {
         articleDate: a.date,
         articleTitle: a.title,
@@ -38,6 +38,24 @@ const AlgoliaIndexArticleToArticle = (a:AlgoliaIndexArticle):Article => {
         articleId: BigInt(0)
     };
 }
+
+export const ArticleToAlgoliaIndexArticle = (a:Article):AlgoliaIndexArticle => {
+    if (a.articleImageURL === null) {
+        throw new Error("ArticleToAlgoliaIndexArticle: articleImageURL is null");
+    }
+
+    return {
+        name: a.articleTitle,
+        description: a.articleText,
+        external_link: "https://thedailypepe.com/article/" + a.articleId,
+        image: a.articleImageURL.toString(),
+        author: a.articleAuthor,
+        date: a.articleDate,
+        title: a.articleTitle,
+        text: a.articleText,
+        tags: a.tags,
+    }
+};
 
 export type ArticlePreview = {
     articleDate: string //format DD-MM-YYYY
