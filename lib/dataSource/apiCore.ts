@@ -454,7 +454,7 @@ import {
       return null
     }
     const articleNFTPreview:ArticleNFTPreview = {
-      articleNFTPreviewImageURL: articleNFT.articleNFTImageURL,
+      articleImageUrl: articleNFT.articleNFTImageURL,
       articleTitle: articlePreview.articleTitle,
       articleDate: articlePreview.articleDate,
       articleId: articleId,
