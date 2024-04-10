@@ -3,7 +3,7 @@ import {
     Chain,
     Hash,
   } from 'viem'
-  import { arbitrum, sepolia } from 'viem/chains'
+  import { base, sepolia } from 'viem/chains'
   import { Article, ArticleNFT, ArticlePreview, ArticleNFTPreview, NFTBalance } from '../../types/apiTypes'
   import { 
     _fetchArticle, 
@@ -15,46 +15,22 @@ import {
     _fetchLatestArticleId, 
     _mintArticleNFT
   } from './apiCore'
-  import { getAccount, getNetwork, getWalletClient, switchNetwork } from '@wagmi/core'
   
-  const validNetworks = [arbitrum, sepolia]
+  const validNetworks = [base, sepolia]
   const defaultNetwork = sepolia //TODO: set this to arbitrum once testing is done
   
-  //check if the user's wallet is connected to a valid network, if not, switch it to the defaultNetwork
-  const validateNetwork = async ():Promise<Chain> => {
-    const currentNet = getNetwork()
-    //if we can't get hte current network
-    if (!currentNet.chain) {
-      const res = await switchNetwork({chainId: defaultNetwork.id})
-      return defaultNetwork
-    }
-    //check if the current network is valid
-    for (let i = 0; i < validNetworks.length; i++) {
-      if(currentNet.chain?.id === validNetworks[i].id) {
-        return currentNet.chain
-      }
-    }
-    //invalid network, switch to default
-    const res = await switchNetwork({chainId: defaultNetwork.id})
-    return defaultNetwork
-  }
   
   //used for generic deplay api calls, not for calls specific to a single user's account
   //check if the user's current network is a valid network, if valid return user's network, if not return default network
   export const getReadOnlyNetwork = ():Chain => {
-    const currentNet = getNetwork()
-    //if we can't get hte current network
-    if (!currentNet.chain) {
-      return defaultNetwork
+    if (process.env.NETWORK == "SEPOLIA") {
+      return sepolia
+    } else if (process.env.NETWORK == "BASE") {
+      return base
+    } else {
+      console.log("invalid network! set the env variable for network:", process.env.NETWORK)
+      process.abort()
     }
-    //check if the current network is valid
-    for (let i = 0; i < validNetworks.length; i++) {
-      if(currentNet.chain?.id === validNetworks[i].id) {
-        return currentNet.chain
-      }
-    }
-    //invalid network, return the default
-    return defaultNetwork
   }
   
   export const fetchLatestArticleId = async ():Promise<bigint> => {
@@ -93,34 +69,4 @@ import {
     return articleIds.map((articleId:bigint):Promise<ArticleNFTPreview|null> => {
       return _fetchArticleNFTPreview(articleId, network)
     })
-  }
-  
-  export const fetchArticleNFTBalances = async (account:Address):Promise<NFTBalance[]> => {
-    const network = await validateNetwork()
-    return _fetchArticleNFTBalances(account, network)
-  }
-  
-  export const mintArticleNFT = async (
-    id:bigint,
-    numMinted:bigint,
-    recipientAccount:Address,
-    affiliateAccount?:Address,
-  ):Promise<{hash:Hash, error:Error|null, isError:boolean}> => {
-    const promises:Promise<any>[] = []
-    promises.push(
-      validateNetwork()
-    )
-    promises.push(
-      getWalletClient()
-    )
-    const senderAccount = getAccount()
-    if (!senderAccount.address) {
-      throw new Error("failed to get wallet account")
-    }
-    try {
-      const [ network, walletClient ] = await Promise.all(promises)
-      return await _mintArticleNFT(id, numMinted, recipientAccount, senderAccount.address, network, walletClient, affiliateAccount)
-    } catch (error:any) {
-      return {hash: "0x", error, isError:true}
-    }
   }

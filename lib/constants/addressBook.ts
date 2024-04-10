@@ -9,36 +9,34 @@ const addressBook = {
     theDailyPepeArticleNFTAddress: '0xe38ff38e956ac9aB0E7ab4DE190d3EC320172357' as Address,
     theDailyPepeMintControllerAddress: '0x04254954e09A0805401B7827C013ceaE47fB7de4' as Address
   },
-  arbitrum: {
+  base: {
     theDailyPepeArticleNFTAddress: '' as Address,
     theDailyPepeMintControllerAddress: '' as Address
   }
 }
 
 export const getTheDailyPepeArticleNFTAddress = ():Address => {
-  switch (process.env.REACT_APP_NETWORK) {
-  case 'HARDHAT':
-    return addressBook.hardhat.theDailyPepeArticleNFTAddress
+  switch (process.env.NETWORK) {
   case 'SEPOLIA':
     return addressBook.sepolia.theDailyPepeArticleNFTAddress
-  case 'ARBITRUM':
-    return addressBook.arbitrum.theDailyPepeArticleNFTAddress
+  case 'BASE':
+    return addressBook.base.theDailyPepeArticleNFTAddress
   default:
-    console.log("error! network environment variable set, returning arbitrum")
-    return addressBook.arbitrum.theDailyPepeArticleNFTAddress
+    console.log("error! network environment not variable set, aborting")
+    process.abort()
   }
 }
 
 export const getTheDailyPepeMintControllerAddress = ():Address => {
-  switch (process.env.REACT_APP_NETWORK) {
+  switch (process.env.NETWORK) {
     case 'HARDHAT':
       return addressBook.hardhat.theDailyPepeMintControllerAddress
     case 'SEPOLIA':
       return addressBook.sepolia.theDailyPepeMintControllerAddress
-    case 'ARBITRUM':
-      return addressBook.arbitrum.theDailyPepeMintControllerAddress
+    case 'BASE':
+      return addressBook.base.theDailyPepeMintControllerAddress
     default:
-      console.log("error! network environment variable set, returning arbitrum")
-      return addressBook.arbitrum.theDailyPepeMintControllerAddress
+      console.log("error! network environment variable not set, aborting")
+      process.abort()
   }
 }
