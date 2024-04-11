@@ -2,6 +2,7 @@ import algoliasearch, { SearchClient } from 'algoliasearch';
 import { Article } from '../../types/apiTypes';
 
 declare type SerializableArticle = {
+  objectID: string,
   articleDate: string //format DD-MM-YYYY
   articleTitle: string
   articleImageURL: URL | string
@@ -35,12 +36,10 @@ export async function pushToAlgolia(
       mintStart: record.mintStart.toString(),
       mintEnd: record.mintEnd.toString(),
       tags: record.tags,
-      articleId: record.articleId.toString()
-    }
-    return {
+      articleId: record.articleId.toString(),
       objectID: record.articleId.toString(),
-      article: serializableRecord,
     }
+    return serializableRecord
   })
   await index.saveObjects(recordsWithIds);
 }
